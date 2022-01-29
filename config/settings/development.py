@@ -12,12 +12,6 @@ SECRET_KEY = env("DJANGO_SECRET_KEY", default="DEVELOPMENT_DJANGO_SECRET_KEY")
 # https://docs.djangoproject.com/en/4.0/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '[::1]']
 
-# Whitenoise
-# ----------------------------------------------------------------------------------------------------------------------
-# Disable Djangos runserver static files serving, and use whitenoise instead
-# http://whitenoise.evans.io/en/latest/django.html#using-whitenoise-in-development
-INSTALLED_APPS = ["whitenoise.runserver_nostatic"] + INSTALLED_APPS
-
 # Django Debug Toolbar
 # ----------------------------------------------------------------------------------------------------------------------
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#prerequisites
