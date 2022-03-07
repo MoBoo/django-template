@@ -4,7 +4,7 @@ from .base import env
 # General Settings
 # ----------------------------------------------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/4.0/ref/settings/#debug
-DEBUG = True  # Enable DEBUG explicitly for development
+DEBUG = False  # Disable DEBUG for production
 
 # https://docs.djangoproject.com/en/4.0/ref/settings/#secret-key
 SECRET_KEY = env("DJANGO_SECRET_KEY")  # raise exception if not set in production
@@ -22,8 +22,7 @@ DATABASES['default']['ATOMIC_REQUESTS'] = True
 DATABASES['default']['CONN_MAX_AGE'] = env.int("DJANGO_DATABASE_CONN_MAX_AGE", default=60)
 
 # Caching
-# ------------------------------------------------------------------------------
-# Use Redis for caching
+# ----------------------------------------------------------------------------------------------------------------------
 CACHES = {
     'default': env.cache('DJANGO_CACHE_URL')
 }
@@ -31,7 +30,7 @@ CACHES = {
 CACHES['default']['IGNORE_EXCEPTIONS'] = True
 
 # Security
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/4.0/ref/settings/#secure-proxy-ssl-header
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
@@ -68,61 +67,63 @@ EMAIL_CONFIG = env.email("DJANGO_EMAIL_SMTP_CONNECTION_STRING")
 vars().update(EMAIL_CONFIG)
 
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-from-email
-DEFAULT_FROM_EMAIL = env("DJANGO_DEFAULT_FROM_EMAIL", default="Things n' Stuff <noreply@thingsnstuff.app>")
+DEFAULT_FROM_EMAIL = env("DJANGO_DEFAULT_FROM_EMAIL", default="Things n' Stuff <noreply@django_template.app>")
 
 # https://docs.djangoproject.com/en/4.0/ref/settings/#server-email
-SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default="Things n' Stuff Admin <admin@thingsnstuff.app>")
+SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default="Things n' Stuff Admin <admin@django_template.app>")
 
 # https://docs.djangoproject.com/en/4.0/ref/settings/#email-subject-prefix
 EMAIL_SUBJECT_PREFIX = env("DJANGO_EMAIL_SUBJECT_PREFIX", default="[Things n' Stuff]")
 
 # Admin
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 # Django Admin URL regex.
 ADMIN_URL = env("DJANGO_ADMIN_URL", default=ADMIN_URL)
 
-# Cloud storage
-# ----------------------------------------------------------------------------------------------------------------------
-# https://django-storages.readthedocs.io/en/latest/#installation
-INSTALLED_APPS += ["storages"]
+# # Cloud storage
+# # --------------------------------------------------------------------------------------------------------------------
+# # https://django-storages.readthedocs.io/en/latest/#installation
+# INSTALLED_APPS += ["storages"]
+#
+# # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
+# AWS_ACCESS_KEY_ID = env("DJANGO_AWS_ACCESS_KEY_ID")
+#
+# # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
+# AWS_SECRET_ACCESS_KEY = env("DJANGO_AWS_SECRET_ACCESS_KEY")
+#
+# # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
+# AWS_STORAGE_BUCKET_NAME = env("DJANGO_AWS_STORAGE_BUCKET_NAME")
+#
+# # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
+# AWS_QUERYSTRING_AUTH = False
+#
+# # DO NOT change these unless you know what you're doing.
+# _AWS_EXPIRY = 60 * 60 * 24 * 7
+#
+# # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
+# AWS_S3_OBJECT_PARAMETERS = {
+#     "CacheControl": f"max-age={_AWS_EXPIRY}, s-maxage={_AWS_EXPIRY}, must-revalidate"
+# }
+#
+# # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
+# AWS_S3_REGION_NAME = env("DJANGO_AWS_S3_REGION_NAME", default=None)
+#
+# # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#cloudfront
+# AWS_S3_CUSTOM_DOMAIN = env("DJANGO_AWS_S3_CUSTOM_DOMAIN", default=None)
+# aws_s3_domain = AWS_S3_CUSTOM_DOMAIN or f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+#
+# # Static Content
+# # --------------------------------------------------------------------------------------------------------------------
+# STATICFILES_STORAGE = "utils.storages.StaticRootS3Boto3Storage"
+# COLLECTFAST_STRATEGY = "collectfast.strategies.boto3.Boto3Strategy"
+# STATIC_URL = f"https://{aws_s3_domain}/static/"
+# TODO: STATIC_URL for local nginx
 
-# https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-AWS_ACCESS_KEY_ID = env("DJANGO_AWS_ACCESS_KEY_ID")
-
-# https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-AWS_SECRET_ACCESS_KEY = env("DJANGO_AWS_SECRET_ACCESS_KEY")
-
-# https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-AWS_STORAGE_BUCKET_NAME = env("DJANGO_AWS_STORAGE_BUCKET_NAME")
-
-# https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-AWS_QUERYSTRING_AUTH = False
-
-# DO NOT change these unless you know what you're doing.
-_AWS_EXPIRY = 60 * 60 * 24 * 7
-
-# https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-AWS_S3_OBJECT_PARAMETERS = {
-    "CacheControl": f"max-age={_AWS_EXPIRY}, s-maxage={_AWS_EXPIRY}, must-revalidate"
-}
-
-# https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-AWS_S3_REGION_NAME = env("DJANGO_AWS_S3_REGION_NAME", default=None)
-
-# https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#cloudfront
-AWS_S3_CUSTOM_DOMAIN = env("DJANGO_AWS_S3_CUSTOM_DOMAIN", default=None)
-aws_s3_domain = AWS_S3_CUSTOM_DOMAIN or f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-
-# Static Content
-# ----------------------------------------------------------------------------------------------------------------------
-STATICFILES_STORAGE = "utils.storages.StaticRootS3Boto3Storage"
-COLLECTFAST_STRATEGY = "collectfast.strategies.boto3.Boto3Strategy"
-STATIC_URL = f"https://{aws_s3_domain}/static/"
-
-# Media Content
-# ----------------------------------------------------------------------------------------------------------------------
-DEFAULT_FILE_STORAGE = "utils.storages.MediaRootS3Boto3Storage"
-MEDIA_URL = f"https://{aws_s3_domain}/media/"
+# # Media Content
+# # --------------------------------------------------------------------------------------------------------------------
+# DEFAULT_FILE_STORAGE = "utils.storages.MediaRootS3Boto3Storage"
+# MEDIA_URL = f"https://{aws_s3_domain}/media/"
+# TODO: MEDIA_URL for local nginx
 
 # Logging
 # ----------------------------------------------------------------------------------------------------------------------

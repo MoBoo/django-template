@@ -1,4 +1,4 @@
-"""thingsnstuff URL Configuration
+"""django_template URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.0/topics/http/urls/
@@ -26,6 +26,7 @@ if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
     # these url in browser to see how these error pages look like.
     from django.views import defaults as default_views
+
     urlpatterns += [
         path(
             "400/",
@@ -44,6 +45,3 @@ if settings.DEBUG:
         ),
         path("500/", default_views.server_error),
     ]
-    if "debug_toolbar" in settings.INSTALLED_APPS:
-        import debug_toolbar
-        urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns

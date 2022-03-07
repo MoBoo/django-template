@@ -72,16 +72,12 @@ BASE_DJANGO_APPS = [
 
 # https://www.django-rest-framework.org/
 # https://pypi.org/project/django-cors-headers/
-# https://djoser.readthedocs.io/en/latest/getting_started.html
 BASE_3RD_PARTY_APPS = [
     'rest_framework',
-    'rest_framework.authtoken',
     'corsheaders',
-    'djoser'
 ]
 
 CUSTOM_APPS = [
-
 ]
 
 INSTALLED_APPS = BASE_DJANGO_APPS + BASE_3RD_PARTY_APPS + CUSTOM_APPS
@@ -161,31 +157,6 @@ LOGGING = {
     },
     "root": {"level": "INFO", "handlers": ["console"]},
 }
-
-# Static Content
-# ----------------------------------------------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/4.0/ref/settings/#static-root
-STATIC_ROOT = str(PROJECT_ROOT / 'staticfiles')
-
-# https://docs.djangoproject.com/en/4.0/ref/settings/#static-url
-STATIC_URL = '/static/'
-
-# https://docs.djangoproject.com/en/4.0/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = [str(APPS_DIR / '/'.join(app_name.split(".")) / 'static') for app_name in CUSTOM_APPS]
-
-# https://docs.djangoproject.com/en/4.0/ref/contrib/staticfiles/#staticfiles-finders
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-]
-
-# Media Content
-# ----------------------------------------------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/4.0/ref/settings/#media-root
-MEDIA_ROOT = str(APPS_DIR / 'mediafiles')
-
-# https://docs.djangoproject.com/en/4.0/ref/settings/#media-url
-MEDIA_URL = '/media/'
 
 # Templates
 # ----------------------------------------------------------------------------------------------------------------------
